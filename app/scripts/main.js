@@ -1,29 +1,40 @@
 (function (){
-var Employee, EmployeeList, EmployeeDetail;
-
 var footer = document.querySelector('.footer');
 
-// get the party started
-if (window.location.hash){
 
-  var hash = window.location.hash.substr(1)
-  var googleSheets = '<google-sheets key="' + hash  + '" tab-id="1" client-id="41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com"></google-sheets>';
-  footer.innerHTML = googleSheets;
-  var sheet = document.querySelector('google-sheets');
-  sheet.addEventListener('google-sheet-data', function(e) {
+var Workspace = Backbone.Router.extend({
 
-   console.log(this.rows); //- list of the user's spreadsheets
-   // this.tab - information on the tab that was fetched
-   // this.rows - cell row information for the tab that was fetched
-  });
+  routes: {
+    "":                    "home",       // #home
+    "s/:query":            "viewSheet",  // #search/[google-sheets id]
+    "s/:query/e:employee": "viewSheet"   // #search/[google-sheets id]/p7
+  },
 
-  sheet.addEventListener('error', function(e) {
-   // e.detail.response
-  });
-} else {
-  footer.innerHTML = 'got nothing';
-}
+  home: function() {
+    console.log('home');
+  },
 
+  viewSheet: function(query, employee) {
+    console.log(query);
+    var googleSheets = '<google-sheets key="' + query  + '" tab-id="1" client-id="41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com"></google-sheets>';
+    footer.innerHTML = googleSheets;
+    var sheet = document.querySelector('google-sheets');
+    sheet.addEventListener('google-sheet-data', function(e) {
+
+     console.log(this.rows); //- list of the user's spreadsheets
+     // this.tab - information on the tab that was fetched
+     // this.rows - cell row information for the tab that was fetched
+    });
+
+    sheet.addEventListener('error', function(e) {
+     // e.detail.response
+    });
+  }
+
+});
+
+window.App = new Workspace();
+Backbone.history.start();
 
 // -- //
 })();
