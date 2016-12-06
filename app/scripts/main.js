@@ -1,6 +1,9 @@
 (function (){
+var Employee, EmployeeList, EmployeeDetail;
 
 var footer = document.querySelector('.footer');
+
+// get the party started
 if (window.location.hash){
 
   var hash = window.location.hash.substr(1)
@@ -21,4 +24,6 @@ if (window.location.hash){
   footer.innerHTML = 'got nothing';
 }
 
+
+// -- //
 })();
