@@ -10,12 +10,19 @@ var Workspace = Backbone.Router.extend({
     "s/:query/e:employee": "viewSheet"   // #search/[google-sheets id]/p7
   },
 
+  initialize: function () {
+    // hmmm
+  },
+
   home: function() {
     console.log('home');
   },
 
   viewSheet: function(query, employee) {
     window.allEmployees =  new window.AllEmployees();
+    this.employeeListView = new window.EmployeeListView({
+      collection : window.allEmployees
+    });
     var googleSheets = '<google-sheets key="' + query  + '" tab-id="1" client-id="41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com"></google-sheets>';
 
     footer.innerHTML = googleSheets;
@@ -36,6 +43,7 @@ var Workspace = Backbone.Router.extend({
         window.allEmployees.add(newEmployee);
 
       });
+
     });
 
     sheet.addEventListener('error', function(e) {
@@ -44,9 +52,9 @@ var Workspace = Backbone.Router.extend({
   }
 
 });
-
-window.App = new Workspace();
-Backbone.history.start();
-
+$(document).ready(function () {
+  window.App = new Workspace();
+  Backbone.history.start();
+});
 // -- //
 })();

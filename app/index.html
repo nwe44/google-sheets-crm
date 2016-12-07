@@ -33,14 +33,13 @@
     <div class="container">
       <div class="header">
         <h3 class="text-muted">google sheets crm</h3>
+          <google-signin client-id="41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets"></google-signin>
       </div>
 
 
 
-      <div class="row marketing">
-        <div class="col-lg-6">
-          <google-signin client-id="41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets"></google-signin>
-        </div>
+      <div id="main" class="row marketing">
+
       </div>
 
       <div class="footer"></div>
@@ -86,5 +85,15 @@
 
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
+
+
+    <script type="text/template" id="EmployeeListViewTemplate">
+      <ul class="employees-list"></ul>
+    </script>
+    <script type="text/template" id="EmployeeListItemViewTemplate">
+      <p><strong><%= gsx$firstname.$t %> <%= gsx$lastname.$t %></strong></p>
+      <p class='employee-title'><%= gsx$title.$t %></p>
+      <p class='current-project'><%= gsx$currentproject.$t %></p>
+    </script>
   </body>
 </html>
