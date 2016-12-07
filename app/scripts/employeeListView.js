@@ -8,10 +8,9 @@
         _.bindAll(this, 'render');
   			this.template = _.template($('#EmployeeListViewTemplate').html());
   			this.collection.bind('reset', this.render);
-  			this.collection.bind('add', this.render);
       },
       render: function () {
-        
+
       			var $container = $('#main');
       			$container.empty();
       			$container.append(this.el);
@@ -27,7 +26,6 @@
       					model : employee,
       					collection : collection
       				});
-
       				$employees.append(view.render().el);
       			});
       			return this;
