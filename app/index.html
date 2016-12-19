@@ -91,10 +91,11 @@
       <ul class="employees-list"></ul>
     </script>
     <script type="text/template" id="EmployeeListItemViewTemplate">
-      <p><a href="#s/<%= sheetID %>/e/<%= id %>"><strong><%= gsx$firstname.$t %> <%= gsx$lastname.$t %> </strong></a></p>
+      <p><a href="#s/<%= sheetID %>/e/<%= id.$t %>"><strong><%= gsx$firstname.$t %> <%= gsx$lastname.$t %> </strong></a></p>
       <p class='employee-title'><%= gsx$title.$t %></p>
       <p class='current-project'><%= gsx$currentproject.$t %></p>
     </script>
+
     <script type="text/template" id="EmployeeDetailViewTemplate">
       <div class="key-info">
         <H2><%= gsx$firstname.$t %> <%= gsx$lastname.$t %></H2>

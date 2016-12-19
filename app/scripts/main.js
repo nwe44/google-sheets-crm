@@ -32,23 +32,11 @@ var Workspace = Backbone.Router.extend({
     var sheet = document.querySelector('google-sheets');
 
     sheet.addEventListener('google-sheet-data', function(e) {
-      var rownum = 0;
-      this.rows.forEach(function(row){
-
-        // backbone thinks that the row ids are identical, so won't add new rows.
-        // forcing the issue
-        // todo: make this cannonical
-        row.id = rownum;
-
-        var newEmployee = new Employee(row);
-        window.allEmployees.add(newEmployee);
-        rownum++;
-      });
+      console.log('got new data from google', this.rows, e);
+      window.allEmployees.add(this.rows);
       if(!employee){
-          console.log('list view');
           window.employeeListView.render();
       } else {
-        console.log('detail view');
         var requestedEmployee = window.allEmployees.get(employee);
         window.employeeDetailView = new window.EmployeeDetailView({
           model : requestedEmployee
