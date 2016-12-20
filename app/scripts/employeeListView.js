@@ -11,7 +11,7 @@
       },
       render: function () {
 
-      			var $container = $('#main');
+      			var $container = $('#list-view');
       			$container.empty();
       			$container.append(this.el);
 

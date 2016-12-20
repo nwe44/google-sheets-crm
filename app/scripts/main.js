@@ -13,7 +13,7 @@ var Workspace = Backbone.Router.extend({
     "":                    "home",       // #home
     "s/:query":            "viewSheet",  // #search/[google-sheets id]
     "s/:query/":            "viewSheet",  // #search/[google-sheets id]
-    "s/:query/e/:employee": "viewSheet"   // #search/[google-sheets id]/p7
+    "s/:query/e/:employee": "viewEmployee"   // #search/[google-sheets id]/p7
   },
 
   initialize: function () {
@@ -24,7 +24,6 @@ var Workspace = Backbone.Router.extend({
     console.log('home');
   },
   viewSheet: function(query, employee) {
-    // console.log('viewsheet', query);
     this.sheetID = query;
     if(this.sheetID.length > 0){
       console.log('sheet id longer');
@@ -36,33 +35,57 @@ var Workspace = Backbone.Router.extend({
         var range = response.result;
         // console.log('range', range.values);
         if (range.values.length > 0) {
-
-          window.allEmployees =  new window.AllEmployees(range.values);
+          if(!window.allEmployees) {
+            window.allEmployees =  new window.AllEmployees(range.values);
+          }
           window.employeeListView = new window.EmployeeListView({
             collection : window.allEmployees
           });
-
-          if(!employee){
-              window.employeeListView.render();
-          } else {
-            var requestedEmployee = window.allEmployees.get(employee);
-            console.log(employee, requestedEmployee, window.allEmployees);
-            window.employeeDetailView = new window.EmployeeDetailView({
-              model : requestedEmployee
-            });
-            //TODO: use a main view controller for this
-            $('#main').append(window.employeeDetailView.render().el);
-          }
-
-
+          window.employeeListView.render();
         } else {
-          appendPre('No data found.');
+          console.log('No data found.');
         }
       }, function(response) {
         console.log('Error: ' + response.result.error.message);
       });
     } // end if(this.sheetID.length > 0)
+  },
+  viewEmployee: function (query, employee){
+    this.sheetID = query;
+    if(!window.employees){
+      if(this.sheetID.length > 0){
+        console.log('sheet id longer');
+        gapi.client.sheets.spreadsheets.values.get({
+          spreadsheetId: this.sheetID,
+          majorDimension: 'ROWS',
+          range: 'A2:I99',
+        }).then(function(response) {
+          var range = response.result;
+          // console.log('range', range.values);
+          if (range.values.length > 0) {
 
+            window.allEmployees =  new window.AllEmployees(range.values);
+            var requestedEmployee = window.allEmployees.get(employee);
+            window.employeeDetailView = new window.EmployeeDetailView({
+              model : requestedEmployee
+            });
+            //TODO: use a main view controller for this
+            window.employeeDetailView.render();
+          } else {
+            console.log('No data found.');
+          }
+        }, function(response) {
+          console.log('Error: ' + response.result.error.message);
+        });
+      }
+    } else { // end if(!window.employees)
+      var requestedEmployee = window.allEmployees.get(employee);
+      window.employeeDetailView = new window.EmployeeDetailView({
+        model : requestedEmployee
+      });
+      //TODO: use a main view controller for this
+      // $('#main').append(window.employeeDetailView.render().el);
+    }
   }
 
 });

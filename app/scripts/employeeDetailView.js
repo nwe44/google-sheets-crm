@@ -8,6 +8,9 @@
         this.template = _.template($('#EmployeeDetailViewTemplate').html());
       },
       render: function () {
+        var $container = $('#detail-view');
+        $container.empty();
+        $container.append(this.el);
         var renderedContent = this.template(this.model.toJSON());
         $(this.el).html(renderedContent);
         return this;
