@@ -10,6 +10,7 @@
     <!-- Place favicon.ico in the root directory -->
 
     <!-- build:css styles/vendor.css -->
+    <link rel="import" href="/bower_components/google-signin/google-signin.html">
     <link rel="import" href="/bower_components/google-apis/google-apis.html">
     <!-- bower:css -->
     <!-- endbower -->
@@ -40,14 +41,20 @@
         <div id="authorize-div">
           <span>Authorize access to Google Sheets API</span>
           <!--Button for the user to click to initiate auth sequence -->
-          <button id="authorize-button" >
-            Authorize
-          </button>
+          <google-signin
+            id='g-signin'
+            client-id='41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com'
+            scopes="https://www.googleapis.com/auth/spreadsheets.readonly">
+          </google-signin>
         </div>
         <pre id="output"></pre>
       </div>
 
-      <div class="footer"></div>
+      <div class="footer">
+        <google-client-loader id="sheets"
+          name="sheets"
+          version="v4"></google-client-loader>
+      </div>
     </div>
 
 
@@ -109,6 +116,6 @@
     </script>
 
 
-    <google-js-api></google-js-api>
+
   </body>
 </html>

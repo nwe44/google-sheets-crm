@@ -23,65 +23,16 @@ var Workspace = Backbone.Router.extend({
     console.log('home');
   },
   viewSheet: function(query, employee) {
+    console.log('viewsheet', query);
     this.sheetID = query;
-    this.checkAuth();
-
-    $('#authorize-button').click(this.handleAuthClick());
-
-    window.allEmployees =  new window.AllEmployees();
-    window.employeeListView = new window.EmployeeListView({
-      collection : window.allEmployees
-    });
-  },
-
-  // utilities -------------
-  /**
-    * Check if current user has authorized this application.
-    */
-  checkAuth: function() {
-    console.log(gapi, 'hello world');
-     gapi.auth2.authorize(
-       {
-         'client_id': this.CLIENT_ID,
-         'scope': this.SCOPES.join(' '),
-         'immediate': true
-       }, handleAuthResult);
-   },
-  /**
-   * Handle response from authorization server.
-   *
-   * @param {Object} authResult Authorization result.
-   */
-  handleAuthResult: function (authResult) {
-    console.log('handle', authResult);
-    var authorizeDiv = document.getElementById('authorize-div');
-    if (authResult && !authResult.error) {
-      // Hide auth UI, then load client library.
-      authorizeDiv.style.display = 'none';
-      loadSheetsApi();
-    } else {
-      // Show auth UI, allowing the user to initiate authorization by
-      // clicking authorize button.
-      authorizeDiv.style.display = 'inline';
-    }
-  },
-  /**
-   * Load Sheets API client library.
-   */
-  loadSheetsApi: function() {
-    var discoveryUrl =
-        'https://sheets.googleapis.com/$discovery/rest?version=v4';
-    gapi.client.load(discoveryUrl).then(buildPage);
-  },
-
-  ///
-  buildPage: function(){
-    if(this.sheetID > 0){
-      gapi.client.sheets.spreadsheets.values.get({
+    if(this.sheetID.length > 0){
+      console.log('sheet id longer');
+      gapi.client.sheets.spreadsheets.get({
         spreadsheetId: this.sheetID,
-        // range: 'Class Data!A2:E',
+        majorDimension: 'ROWS'
+         range: 'A1:D99',
       }).then(function(response) {
-        console.log (response);
+        console.log ('response',response, response.result);
         // var range = response.result;
         // if (range.values.length > 0) {
         //   appendPre('Name, Major:');
@@ -97,6 +48,13 @@ var Workspace = Backbone.Router.extend({
         appendPre('Error: ' + response.result.error.message);
       });
     }
+    window.allEmployees =  new window.AllEmployees();
+    window.employeeListView = new window.EmployeeListView({
+      collection : window.allEmployees
+    });
+  },
+
+  ///
 
 
     // console.log('got new data from google', this.rows, e);
@@ -111,7 +69,7 @@ var Workspace = Backbone.Router.extend({
     //   //TODO: use a main view controller for this
     //   $('#main').append(window.employeeDetailView.render().el);
     // }
-  },
+
   /**
    * Append a pre element to the body containing the given message
    * as its text node.
@@ -123,30 +81,34 @@ var Workspace = Backbone.Router.extend({
     var textContent = document.createTextNode(message + '\n');
     pre.appendChild(textContent);
   },
-  /**
-   * Initiate auth flow in response to user clicking authorize button.
-   *
-   * @param {Event} event Button click event.
-   */
-  handleAuthClick: function(event) {
-    console.log('hangling auth click');
-    gapi.auth2.authorize(
-      {client_id: this.CLIENT_ID, scope: this.SCOPES, immediate: false},
-      handleAuthResult);
-    return false;
-  },
-  authorized: function(){
-    console.log('rocking');
-  }
+
 
 
 });
 $(document).ready(function () {
 
   window.App = new Workspace();
-  var api = document.querySelector('google-js-api');
-  api.addEventListener('js-api-load', function(e) {
+  var api = document.querySelector('#sheets');
+  var auth = document.querySelector('#g-signin');
+  auth.addEventListener('google-signin-success', function(e) {
+    console.log('successfully signed in', e);
+  });
+  api.addEventListener('google-api-load', function(e) {
+    console.log('successfully loaded api', e);
+
+    if(auth.signedIn){
+      Backbone.history.start();
+    }
+  });
+  if(api.libraryLoaded && auth.signedIn) {
     Backbone.history.start();
+  }
+
+  // todo: handle logout events
+
+  console.log(api, api.libraryLoaded, auth.signedIn );
+  api.addEventListener('google-api-load-error', function(e){
+    console.log('failed to load api', e);
   });
 });
 
