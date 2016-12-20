@@ -12,6 +12,7 @@ var Workspace = Backbone.Router.extend({
   routes: {
     "":                    "home",       // #home
     "s/:query":            "viewSheet",  // #search/[google-sheets id]
+    "s/:query/":            "viewSheet",  // #search/[google-sheets id]
     "s/:query/e/:employee": "viewSheet"   // #search/[google-sheets id]/p7
   },
 
@@ -30,7 +31,7 @@ var Workspace = Backbone.Router.extend({
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: this.sheetID,
         majorDimension: 'ROWS',
-        range: 'B2:I99',
+        range: 'A2:I99',
       }).then(function(response) {
         var range = response.result;
         // console.log('range', range.values);
@@ -45,7 +46,7 @@ var Workspace = Backbone.Router.extend({
               window.employeeListView.render();
           } else {
             var requestedEmployee = window.allEmployees.get(employee);
-            console.log(employee, requestedEmployee);
+            console.log(employee, requestedEmployee, window.allEmployees);
             window.employeeDetailView = new window.EmployeeDetailView({
               model : requestedEmployee
             });
@@ -78,9 +79,9 @@ var auth = document.querySelector('#g-signin');
 // });
 api.addEventListener('google-api-load', function(e) {
   console.log('successfully loaded api', e);
-  if(auth.signedIn){
+  // if(auth.signedIn){
     Backbone.history.start();
-  }
+  // }
 });
 if(api.libraryLoaded && auth.signedIn) {
   Backbone.history.start();
