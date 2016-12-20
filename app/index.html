@@ -10,8 +10,7 @@
     <!-- Place favicon.ico in the root directory -->
 
     <!-- build:css styles/vendor.css -->
-    <link rel="import" href="bower_components/google-signin/google-signin.html">
-    <link rel="import" href="bower_components/google-sheets/google-sheets.html">
+    <link rel="import" href="/bower_components/google-apis/google-apis.html">
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
@@ -33,13 +32,19 @@
     <div class="container">
       <div class="header">
         <h3 class="text-muted">google sheets crm</h3>
-          <google-signin client-id="41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets"></google-signin>
       </div>
 
 
 
       <div id="main" class="row marketing">
-
+        <div id="authorize-div">
+          <span>Authorize access to Google Sheets API</span>
+          <!--Button for the user to click to initiate auth sequence -->
+          <button id="authorize-button" >
+            Authorize
+          </button>
+        </div>
+        <pre id="output"></pre>
       </div>
 
       <div class="footer"></div>
@@ -50,10 +55,9 @@
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/modernizr/modernizr.js"></script>
-    <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
-    <script src="/bower_components/promise-polyfill/Promise.js"></script>
     <script src="/bower_components/underscore/underscore.js"></script>
     <script src="/bower_components/backbone/backbone.js"></script>
+    <script src="/bower_components/webcomponentsjs/webcomponents.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -103,5 +107,8 @@
         <p class='current-project'><%= gsx$currentproject.$t %></p>
       </div>
     </script>
+
+
+    <google-js-api></google-js-api>
   </body>
 </html>
