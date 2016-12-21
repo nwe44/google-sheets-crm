@@ -1,11 +1,12 @@
 (function (){
 
   // placeholder for main view
-  window.MainView = Backbone.View.extend({
-      className : "viewWrapper",
+  window.HeaderView = Backbone.View.extend({
+  		// className : "headerView",
+      tagName : "div",
       initialize: function () {
   			_.bindAll(this, 'render');
-        this.template = _.template($('#MainViewTemplate').html());
+        this.template = _.template($('#HeaderViewTemplate').html());
       },
       render: function () {
         $(this.el).html(this.template());

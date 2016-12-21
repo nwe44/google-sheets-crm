@@ -31,25 +31,13 @@
     <![endif]-->
 
     <div class="container">
-      <div class="header">
+      <div id="header" class="header">
         <h3 class="text-muted">google sheets crm</h3>
       </div>
 
 
 
       <div id="main" >
-        <div id="list-view" class="row marketing"></div>
-        <div id="detail-view" class="row marketing"></div>
-        <div id="authorize-div">
-          <span>Authorize access to Google Sheets API</span>
-          <!--Button for the user to click to initiate auth sequence -->
-          <google-signin
-            id='g-signin'
-            client-id='41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com'
-            scopes="https://www.googleapis.com/auth/spreadsheets.readonly">
-          </google-signin>
-        </div>
-        <pre id="output"></pre>
       </div>
 
       <div class="footer">
@@ -90,6 +78,7 @@
     <script src="scripts/employee.js"></script>
     <script src="scripts/allEmployees.js"></script>
 
+    <script src="scripts/headerView.js"></script>
     <script src="scripts/mainView.js"></script>
 
     <script src="scripts/employeeDetailView.js"></script>
@@ -103,6 +92,23 @@
 
     <script type="text/template" id="EmployeeListViewTemplate">
       <ul class="employees-list"></ul>
+    </script>
+
+    <script type="text/template" id="MainViewTemplate">
+      <div id="list-view" class="row marketing"></div>
+      <div id="detail-view" class="row marketing"></div>
+    </script>
+
+    <script type="text/template" id="HeaderViewTemplate">
+      <div id="authorize-div">
+        <span>Authorize access to Google Sheets API</span>
+        <!--Button for the user to click to initiate auth sequence -->
+        <google-signin
+          id='g-signin'
+          client-id='41248146944-jpcqhs9lp3t69pgvlercu8roijmoqbfm.apps.googleusercontent.com'
+          scopes="https://www.googleapis.com/auth/spreadsheets.readonly">
+        </google-signin>
+      </div>
     </script>
 
     <script type="text/template" id="EmployeeListItemViewTemplate">

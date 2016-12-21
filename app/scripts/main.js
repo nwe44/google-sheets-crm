@@ -17,8 +17,41 @@ var Workspace = Backbone.Router.extend({
   },
 
   initialize: function () {
-    // hmmm
+    this.headerView = new HeaderView();
+    this.mainView = new MainView();
+    $('#header').html(this.headerView.render().el);
+    $('#main').html(this.mainView.render().el);
+
+     var api = document.querySelector('#sheets');
+     var auth = document.querySelector('#g-signin');
+
+
+     // TODO: handle logout events
+     if( api.libraryLoaded && auth.signedIn ) {
+       Backbone.history.start();
+     } else {
+       api.addEventListener('google-api-load', function(e){
+         Backbone.history.start();
+       });
+       api.addEventListener('google-api-load-error', function(e){
+         console.log('failed to load api', e);
+       });
+      //  auth.addEventListener('google-signin-success', function(e) {
+      //    console.log('successfully signed in', e, gapi);
+      //    if(!api.libraryLoaded){
+      //      gapi.load('sheets', '4', {callback: Backbone.history.start});
+      //    }
+      //  });
+     }
+
+     function  loadedSheets(){
+       console.log('sheets loaded thinging');
+     }
+
   },
+  checkAuth : function () {
+    // consider polling to check gapi load status
+  }
 
   home: function() {
     console.log('home');
@@ -90,35 +123,9 @@ var Workspace = Backbone.Router.extend({
 
 });
 
-window.app = new Workspace();
-var api = document.querySelector('#sheets');
-var auth = document.querySelector('#g-signin');
-// auth.addEventListener('google-signin-success', function(e) {
-//   console.log('successfully signed in', e, gapi);
-//   if(!api.libraryLoaded){
-//     gapi.load('sheets', '4', {callback: Backbone.history.start});
-//   }
-//
-// });
-api.addEventListener('google-api-load', function(e) {
-  console.log('successfully loaded api', e);
-  // if(auth.signedIn){
-    Backbone.history.start();
-  // }
+
+$( document ).ready(function() {
+  window.app = new Workspace();
 });
-if(api.libraryLoaded && auth.signedIn) {
-  Backbone.history.start();
-}
 
-// todo: handle logout events
-
-// console.log(api, api.libraryLoaded, auth.signedIn );
-api.addEventListener('google-api-load-error', function(e){
-  console.log('failed to load api', e);
-});
-function  loadedSheets(){
-  console.log('sheets loaded thinging');
-}
-
-// -- //
 })();
